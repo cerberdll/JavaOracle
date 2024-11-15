@@ -1,28 +1,46 @@
-import java.util.Scanner;
-
 public class Fraction {
     private int numerator;
     private int denominator;
 
-    public void inputData() {
-        Scanner scanner = new Scanner(System.in);
+    // Конструкторы
+    public Fraction() {
+        this.numerator = 0;
+        this.denominator = 1;
+    }
 
-        System.out.print("Введите числитель: ");
-        numerator = scanner.nextInt();
-
-        System.out.print("Введите знаменатель: ");
-        denominator = scanner.nextInt();
-
+    public Fraction(int numerator, int denominator) {
+        this.numerator = numerator;
         if (denominator == 0) {
             System.out.println("Знаменатель не может быть равен нулю. Установлено значение 1.");
-            denominator = 1;
+            this.denominator = 1;
+        } else {
+            this.denominator = denominator;
         }
     }
 
-    public void displayData() {
-        System.out.println("Дробь: " + numerator + "/" + denominator);
+    // Геттеры и сеттеры
+    public int getNumerator() {
+        return numerator;
     }
 
+    public void setNumerator(int numerator) {
+        this.numerator = numerator;
+    }
+
+    public int getDenominator() {
+        return denominator;
+    }
+
+    public void setDenominator(int denominator) {
+        if (denominator == 0) {
+            System.out.println("Знаменатель не может быть равен нулю. Установлено значение 1.");
+            this.denominator = 1;
+        } else {
+            this.denominator = denominator;
+        }
+    }
+
+    // Арифметические операции
     public Fraction add(Fraction other) {
         int newNumerator = this.numerator * other.denominator + other.numerator * this.denominator;
         int newDenominator = this.denominator * other.denominator;
@@ -47,18 +65,8 @@ public class Fraction {
         return new Fraction(newNumerator, newDenominator);
     }
 
-    public Fraction(int numerator, int denominator) {
-        this.numerator = numerator;
-        if (denominator == 0) {
-            System.out.println("Знаменатель не может быть равен нулю. Установлено значение 1.");
-            this.denominator = 1;
-        } else {
-            this.denominator = denominator;
-        }
-    }
-
-    public Fraction() {
-        this.numerator = 0;
-        this.denominator = 1;
+    // Метод для вывода данных
+    public void displayData() {
+        System.out.println("Дробь: " + numerator + "/" + denominator);
     }
 }

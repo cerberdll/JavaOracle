@@ -8,10 +8,14 @@ public class Person {
     private String country;
     private String homeAddress;
 
-    // Конструктор без параметров
+    // Конструкторы
     public Person() {}
 
-    // Конструктор с параметрами
+    public Person(String fullName, String dateOfBirth) {
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public Person(String fullName, String dateOfBirth, String phoneNumber, String city, String country, String homeAddress) {
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
@@ -21,40 +25,7 @@ public class Person {
         this.homeAddress = homeAddress;
     }
 
-    // Метод для ввода данных
-    public void inputData() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Введите ФИО: ");
-        fullName = scanner.nextLine();
-
-        System.out.print("Введите дату рождения: ");
-        dateOfBirth = scanner.nextLine();
-
-        System.out.print("Введите номер телефона: ");
-        phoneNumber = scanner.nextLine();
-
-        System.out.print("Введите город: ");
-        city = scanner.nextLine();
-
-        System.out.print("Введите страну: ");
-        country = scanner.nextLine();
-
-        System.out.print("Введите домашний адрес: ");
-        homeAddress = scanner.nextLine();
-    }
-
-    // Метод для вывода данных
-    public void displayData() {
-        System.out.println("ФИО: " + fullName);
-        System.out.println("Дата рождения: " + dateOfBirth);
-        System.out.println("Телефон: " + phoneNumber);
-        System.out.println("Город: " + city);
-        System.out.println("Страна: " + country);
-        System.out.println("Домашний адрес: " + homeAddress);
-    }
-
-    // Геттеры и сеттеры для каждого поля
+    // Геттеры и сеттеры
     public String getFullName() {
         return fullName;
     }
@@ -109,5 +80,38 @@ public class Person {
         this.country = newCountry;
         this.homeAddress = newHomeAddress;
         System.out.println("Адрес обновлен.");
+    }
+
+    // Метод для ввода данных
+    public void inputData() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введите ФИО: ");
+        this.fullName = scanner.nextLine();
+
+        System.out.print("Введите дату рождения: ");
+        this.dateOfBirth = scanner.nextLine();
+
+        System.out.print("Введите номер телефона: ");
+        this.phoneNumber = scanner.nextLine();
+
+        System.out.print("Введите город: ");
+        this.city = scanner.nextLine();
+
+        System.out.print("Введите страну: ");
+        this.country = scanner.nextLine();
+
+        System.out.print("Введите домашний адрес: ");
+        this.homeAddress = scanner.nextLine();
+    }
+
+    // Метод для вывода данных
+    public void displayData() {
+        System.out.println("ФИО: " + fullName);
+        System.out.println("Дата рождения: " + dateOfBirth);
+        System.out.println("Телефон: " + phoneNumber);
+        System.out.println("Город: " + city);
+        System.out.println("Страна: " + country);
+        System.out.println("Домашний адрес: " + homeAddress);
     }
 }

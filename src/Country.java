@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Country {
     private String name;
@@ -8,43 +6,21 @@ public class Country {
     private int population;
     private String phoneCode;
     private String capital;
-    private List<String> cities = new ArrayList<>();
+    private List<String> cities;
 
-    public void inputData() {
-        Scanner scanner = new Scanner(System.in);
+    // Конструкторы
+    public Country() {}
 
-        System.out.print("Введите название страны: ");
-        name = scanner.nextLine();
-
-        System.out.print("Введите континент: ");
-        continent = scanner.nextLine();
-
-        System.out.print("Введите количество жителей: ");
-        population = scanner.nextInt();
-        scanner.nextLine(); // Сброс буфера
-
-        System.out.print("Введите телефонный код страны: ");
-        phoneCode = scanner.nextLine();
-
-        System.out.print("Введите название столицы: ");
-        capital = scanner.nextLine();
-
-        System.out.print("Введите города страны (через запятую): ");
-        String[] cityArray = scanner.nextLine().split(",");
-        for (String city : cityArray) {
-            cities.add(city.trim());
-        }
+    public Country(String name, String continent, int population, String phoneCode, String capital, List<String> cities) {
+        this.name = name;
+        this.continent = continent;
+        this.population = population;
+        this.phoneCode = phoneCode;
+        this.capital = capital;
+        this.cities = cities;
     }
 
-    public void displayData() {
-        System.out.println("Страна: " + name);
-        System.out.println("Континент: " + continent);
-        System.out.println("Население: " + population);
-        System.out.println("Телефонный код: " + phoneCode);
-        System.out.println("Столица: " + capital);
-        System.out.println("Города: " + cities);
-    }
-
+    // Геттеры и сеттеры
     public String getName() {
         return name;
     }
@@ -53,5 +29,61 @@ public class Country {
         this.name = name;
     }
 
-    // Аналогично можно реализовать методы доступа для других полей
+    public String getContinent() {
+        return continent;
+    }
+
+    public void setContinent(String continent) {
+        this.continent = continent;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public String getPhoneCode() {
+        return phoneCode;
+    }
+
+    public void setPhoneCode(String phoneCode) {
+        this.phoneCode = phoneCode;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public List<String> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<String> cities) {
+        this.cities = cities;
+    }
+
+    // Метод для добавления города
+    public void addCity(String city, boolean isCapital) {
+        cities.add(city);
+        if (isCapital) {
+            capital = city;
+        }
+    }
+
+    // Метод для вывода данных
+    public void displayData() {
+        System.out.println("Страна: " + name);
+        System.out.println("Континент: " + continent);
+        System.out.println("Население: " + population);
+        System.out.println("Телефонный код: " + phoneCode);
+        System.out.println("Столица: " + capital);
+        System.out.println("Города: " + cities);
+    }
 }
