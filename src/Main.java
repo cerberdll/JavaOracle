@@ -1,15 +1,32 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Тестируем Person
+        Person person = new Person();
+        person.inputData();
+        person.displayData();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // Тестируем City
+        City city = new City();
+        city.inputData();
+        city.displayData();
+
+        // Тестируем Country
+        Country country = new Country();
+        country.inputData();
+        country.displayData();
+
+        // Тестируем Fraction
+        Fraction fraction1 = new Fraction();
+        Fraction fraction2 = new Fraction();
+
+        System.out.println("Введите первую дробь:");
+        fraction1.inputData();
+
+        System.out.println("Введите вторую дробь:");
+        fraction2.inputData();
+
+        Fraction sum = fraction1.add(fraction2);
+        System.out.print("Сумма: ");
+        sum.displayData();
     }
 }
