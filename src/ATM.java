@@ -1,75 +1,87 @@
-import java.util.HashMap;
-import java.util.Map;
+import exceptions.ATMException;
+import exceptions.InsufficientFundsException;
+import exceptions.ExceedsBanknoteLimitException;
+import exceptions.InvalidAmountException;
 
 public class ATM {
-    private Map<Integer, Integer> banknotes = new HashMap<>();
+    private int[] denominations = {500, 200, 100, 50, 20, 10, 5, 2, 1};
+    private int[] banknoteCounts = new int[denominations.length];
     private int minWithdrawal;
     private int maxBanknotes;
 
     public ATM(int minWithdrawal, int maxBanknotes) {
         this.minWithdrawal = minWithdrawal;
         this.maxBanknotes = maxBanknotes;
+    }
 
-        // Инициализация номиналов банкнот
-        int[] denominations = {1, 2, 5, 10, 20, 50, 100, 200, 500};
-        for (int denomination : denominations) {
-            banknotes.put(denomination, 0);
+    public void initializeATM(int[] initialCounts) throws InvalidAmountException {
+        if (initialCounts.length != denominations.length) {
+            throw new InvalidAmountException("Неверное количество номиналов.");
         }
+        System.arraycopy(initialCounts, 0, banknoteCounts, 0, denominations.length);
     }
 
-    public void initializeATM(Map<Integer, Integer> initialBanknotes) {
-        initialBanknotes.forEach((denomination, count) ->
-                banknotes.put(denomination, banknotes.getOrDefault(denomination, 0) + count));
+    public void depositMoney(int denomination, int count) throws InvalidAmountException {
+        int index = findDenominationIndex(denomination);
+        if (index == -1) {
+            throw new InvalidAmountException("Неверный номинал.");
+        }
+        banknoteCounts[index] += count;
     }
 
-    public void depositMoney(Map<Integer, Integer> depositBanknotes) {
-        depositBanknotes.forEach((denomination, count) ->
-                banknotes.put(denomination, banknotes.getOrDefault(denomination, 0) + count));
-    }
-
-    public Map<Integer, Integer> withdrawMoney(int amount) throws ATMException {
+    public int withdrawMoney(int amount) throws ATMException {
         if (amount < minWithdrawal) {
-            throw new InvalidAmountException("Сумма меньше минимальной для выдачи: " + minWithdrawal);
+            throw new InvalidAmountException("Сумма меньше минимальной для выдачи.");
         }
 
-        Map<Integer, Integer> withdrawal = new HashMap<>();
+        int[] withdrawal = new int[denominations.length];
         int totalBanknotes = 0;
-        int remainingAmount = amount;
 
-        for (int denomination : banknotes.keySet().stream().sorted((a, b) -> b - a).toList()) {
-            int count = Math.min(remainingAmount / denomination, banknotes.get(denomination));
-            if (count > 0) {
-                withdrawal.put(denomination, count);
-                remainingAmount -= count * denomination;
-                totalBanknotes += count;
+        for (int i = 0; i < denominations.length; i++) {
+            int count = Math.min(amount / denominations[i], banknoteCounts[i]);
+            withdrawal[i] = count;
+            amount -= count * denominations[i];
+            totalBanknotes += count;
 
-                if (totalBanknotes > maxBanknotes) {
-                    throw new ExceedsBanknoteLimitException("Превышено максимальное количество банкнот для выдачи.");
-                }
+            if (totalBanknotes > maxBanknotes) {
+                throw new ExceedsBanknoteLimitException("Превышено максимальное количество банкнот.");
             }
         }
 
-        if (remainingAmount > 0) {
+        if (amount > 0) {
             throw new InsufficientFundsException("Невозможно выдать запрошенную сумму.");
         }
 
-        // Обновляем баланс банкомата
-        withdrawal.forEach((denomination, count) ->
-                banknotes.put(denomination, banknotes.get(denomination) - count));
+        // Обновление остатка
+        for (int i = 0; i < denominations.length; i++) {
+            banknoteCounts[i] -= withdrawal[i];
+        }
 
-        return withdrawal;
+        return totalBanknotes;
     }
 
     public int getTotalMoney() {
-        return banknotes.entrySet().stream()
-                .mapToInt(entry -> entry.getKey() * entry.getValue())
-                .sum();
+        int total = 0;
+        for (int i = 0; i < denominations.length; i++) {
+            total += denominations[i] * banknoteCounts[i];
+        }
+        return total;
     }
 
     public void displayATMInfo() {
-        System.out.println("Банкомат:");
-        banknotes.forEach((denomination, count) ->
-                System.out.println(denomination + " грн: " + count + " банкнот"));
+        System.out.println("Информация о банкомате:");
+        for (int i = 0; i < denominations.length; i++) {
+            System.out.println(denominations[i] + " грн: " + banknoteCounts[i]);
+        }
         System.out.println("Итого: " + getTotalMoney() + " грн");
+    }
+
+    private int findDenominationIndex(int denomination) {
+        for (int i = 0; i < denominations.length; i++) {
+            if (denominations[i] == denomination) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
