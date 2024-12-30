@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DrinksOperations {
-    public static void main(String[] args) {
-        addDrink("Cappuccino", "Капучино", 5.00);
-        listDrinks();
-    }
 
     public static void addDrink(String nameEn, String nameLocal, double price) {
         String sql = "INSERT INTO Drinks (name_en, name_local, price) VALUES (?, ?, ?)";
@@ -21,6 +17,20 @@ public class DrinksOperations {
             statement.setDouble(3, price);
             statement.executeUpdate();
             System.out.println("Drink added successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateDrinkPrice(String nameEn, double newPrice) {
+        String sql = "UPDATE Drinks SET price = ? WHERE name_en = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setDouble(1, newPrice);
+            statement.setString(2, nameEn);
+            statement.executeUpdate();
+            System.out.println("Drink price updated successfully.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
