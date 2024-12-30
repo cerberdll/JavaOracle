@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS notice (
+    id SERIAL PRIMARY KEY,
+    message TEXT NOT NULL,
+    type VARCHAR(10) NOT NULL,
+    processed BOOLEAN DEFAULT FALSE
+);
