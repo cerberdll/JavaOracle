@@ -40,4 +40,31 @@ public class ScheduleOperations {
             e.printStackTrace();
         }
     }
+
+    public static void listSchedulesForStaff(int staffId) {
+        String sql = "SELECT * FROM Schedule WHERE staff_id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, staffId);
+            ResultSet resultSet = statement.executeQuery();
+
+            System.out.println("Schedules for Staff ID: " + staffId);
+            boolean found = false;
+
+            while (resultSet.next()) {
+                found = true;
+                System.out.println("Schedule ID: " + resultSet.getInt("id") +
+                        ", Work Date: " + resultSet.getDate("work_date") +
+                        ", Shift Start: " + resultSet.getTime("shift_start") +
+                        ", Shift End: " + resultSet.getTime("shift_end"));
+            }
+
+            if (!found) {
+                System.out.println("No schedules found for Staff ID: " + staffId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
